@@ -231,19 +231,31 @@ module.exports.handleEvent = async function({ api, event, args, Threads, Users }
      return api.sendMessage("🏔️🏝️Priyansh Ƞɛ ꌗƥɛçɪɑɭɭɣ Ƭuɱ 🌊🪺Jɑɪʂɛ Ƭɧɑɽƙɪɣɵ Ƙɛ Ɬɪɣɛ•• 🏞️🌬️Ɣɑɧ çɵɱɱɑƞɗ Ɦɑʈɑ Ɗɪɣɑ Ɦɑɪ↗↘ Sɵɽɽɣ Ɠɣuʂ••😹🫶", threadID);
    };
 
-  if ((event.body.toLowerCase() == "ami priyansh") || (event.body.toLowerCase() == "ami diya") || (event.body.toLowerCase() == "main amrita") || (event.body.toLowerCase() == "main priyansh") || (event.body.toLowerCase() == "main diya")) {
-     return api.sendMessage("🕊️🍎...Aɭɛ Ɱɛɹɛ Ɓɑɓɣ Ƙɛʂɛ Ɦɵ ɑɑp😚🍒", threadID);
-   };
-   mess = "{name}"
+  if (event.body.indexOf("Bot") === 0 || event.body.indexOf("bot") === 0) {
+  const imageUrl = "https://i.imgur.com/pwogATN.jpeg"; // Your image URL
   
-  if (event.body.indexOf("Bot") == 0 || (event.body.indexOf("bot") == 0)) {
-    var msg = { 
-      body: `✨🌿❣︎${name}❣︎🌿✨,    ━━━━━━✦🌹✦━━━━━━ \n\n『\n   ${rand} 』\n\n  ╔═════❀❦︎❀═════╗           ★꧁𝐎𝐖𝐍𝐄𝐑꧂★ 𝐙𝐚𝐢𝐧𝐢 𝐉𝐮𝐭𝐭  ╚═════❀❦︎❀═════╝ "https://i.imgur.com/pwogATN.jpeg"`
-    }
+  try {
+    // Fetch the image from the URL
+    axios({
+      method: 'get',
+      url: imageUrl,
+      responseType: 'arraybuffer'
+    }).then(response => {
+      const imageBuffer = Buffer.from(response.data, "binary");
+      
+      // Send the image as a photo
+      const msg = {
+        body: `✨🌿❣︎${name}❣︎🌿✨,    ━━━━━━✦🌹✦━━━━━━ \n\n『\n   ${rand} 』\n\n  ╔═════❀❦︎❀═════╗           ★꧁𝐎𝐖𝐍𝐄𝐑꧂★ 𝐙𝐚𝐢𝐧𝐢 𝐉𝐮𝐭𝐭  ╚═════❀❦︎❀═════╝`,
+        attachment: imageBuffer
+      };
 
-    return api.sendMessage(msg, threadID, messageID);
-  };
-
+      return api.sendMessage(msg, threadID);
+    }).catch(err => {
+      console.error("Error fetching the image:", err);
+      api.sendMessage("Koi problem hui image fetch karne mein!", threadID);
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    api.sendMessage("Kuch galti ho gayi!", threadID);
+  }
 }
-
-module.exports.run = function({ api, event, client, __GLOBAL }) { }
